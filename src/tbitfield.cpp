@@ -161,21 +161,21 @@ TBitField TBitField:: operator|(const TBitField& bf)
 {
     if (BitLen > bf.BitLen)
     {
-        TBitField tmp(*this);
+        TBitField result(*this);
         for (int i = 0; i < bf.MemLen; i++)
         {
-            tmp.pMem[i] |= bf.pMem[i];
+            result.pMem[i] |= bf.pMem[i];
         }
-        return tmp;
+        return result;
     }
     else
     {
-        TBitField tmp(bf);
+        TBitField result(bf);
         for (int i = 0; i < MemLen; i++)
         {
-            tmp.pMem[i] |= pMem[i];
+            result.pMem[i] |= pMem[i];
         }
-        return tmp;
+        return result;
     }
 }
 
