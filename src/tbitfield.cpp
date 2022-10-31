@@ -3,7 +3,6 @@
 using namespace std;
 
 
-typedef unsigned int TELEM;
 
 
 TBitField::TBitField(int len)
@@ -11,7 +10,7 @@ TBitField::TBitField(int len)
     if (len > 0)
     {
         BitLen = len;
-        MemLen = (BitLen / (sizeof(TELEM) * 8)) + 1;
+        MemLen = (BitLen / (sizeof(TELEM) * 8)) + BitLen%(sizeof(TELEM)*8);
         pMem = new TELEM[MemLen];
         for (int i = 0; i < MemLen; i++)
         {
@@ -90,7 +89,7 @@ int TBitField::GetBit(const int n) const
 {
     if ((n < BitLen) && (n >= 0))
     {
-        return (pMem[GetMemIndex(n)] & GetMemMask(n)) >> n;
+        return (pMem[GetMemIndex(n)] & GetMemMask(n));
     }
     else
     {
@@ -200,12 +199,10 @@ istream& operator>>(istream& istr, TBitField& bf)
 {
     int len;
     int el;
-    cout << "enter length of bitfield: " << endl;
     cin >> len;
     TBitField result(len);
     for (int i = 0; i < len; i++)
     {
-        cout << "enter the bit: ";
         cin >> el;
         if (el == 0)
         {
