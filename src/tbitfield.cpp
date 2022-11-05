@@ -199,11 +199,11 @@ istream& operator>>(istream& istr, TBitField& bf)
 {
     int len;
     int el;
-    cin >> len;
+    istr >> len;
     TBitField result(len);
     for (int i = 0; i < len; i++)
     {
-        cin >> el;
+        istr >> el;
         if (el == 0)
         {
             result.ClrBit(i);

@@ -124,7 +124,7 @@ ostream& operator<<(ostream &ostr, const TSet &s) // вывод
     {
         if (s.IsMember(i))
         {
-            cout << i << endl;
+            ostr << i << endl;
         }
     }
     return ostr;
