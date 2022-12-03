@@ -10,7 +10,7 @@ TBitField::TBitField(int len)
     if (len > 0)
     {
         BitLen = len;
-        MemLen = (BitLen / (sizeof(TELEM) * 8)) + BitLen%(sizeof(TELEM)*8);
+        MemLen = BitLen / (sizeof(TELEM) * 8) + (BitLen % (sizeof(TELEM) * 8) != 0);
         pMem = new TELEM[MemLen];
         for (int i = 0; i < MemLen; i++)
         {
@@ -89,7 +89,7 @@ int TBitField::GetBit(const int n) const
 {
     if ((n < BitLen) && (n >= 0))
     {
-        return (pMem[GetMemIndex(n)] & GetMemMask(n));
+        return (pMem[GetMemIndex(n)] & GetMemMask(n)) != 0;
     }
     else
     {
@@ -197,23 +197,20 @@ TBitField TBitField:: operator~()
 
 istream& operator>>(istream& istr, TBitField& bf)
 {
-    int len;
     int el;
-    istr >> len;
-    TBitField result(len);
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < bf.GetLength(); i++)
     {
         istr >> el;
-        if (el == 0)
-        {
-            result.ClrBit(i);
+        if (el == 0) {
+            bf.ClrBit(i);
         }
-        else
-        {
-            result.SetBit(i);
+        else if (el == 1) {
+            bf.SetBit(i);
+        }
+        else {
+            throw exception("wrong element");
         }
     }
-    bf = result;
     return istr;
 }
 
@@ -222,9 +219,8 @@ ostream& operator<<(ostream &ostr, const TBitField &bf)
 {
     for (int i = 0; i < bf.BitLen; i++)
     {
-        ostr << bf.GetBit(i) << " ";
+        ostr << bf.GetBit(i);
     }
-    ostr << endl;
     return ostr;
 }
 

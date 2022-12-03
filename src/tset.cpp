@@ -120,12 +120,6 @@ istream &operator>>(istream &istr, TSet &s) // ввод
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
-    for (int i = 0; i < s.MaxPower; i++)
-    {
-        if (s.IsMember(i))
-        {
-            ostr << i << endl;
-        }
-    }
+    ostr << s.BitField;
     return ostr;
 }
